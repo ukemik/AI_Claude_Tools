@@ -1,0 +1,8 @@
+{
+  "name": "claude-mods",
+  "owner": { "name": "ukemiktarak" },
+  "plugins": [
+    { "name": "prompt-pad", "source": "./prompt-pad", "description": "/p opens .claude/prompts.txt in VS Code; Ctrl+Enter / Ctrl+Shift+Enter send prompt blocks (with the VS Code extension in prompt-pad/vscode-extension)." },
+    { "name": "usage-status", "source": "./usage-status", "description": "Context-window fill and rate-limit usage above the prompt." }
+  ]
+}

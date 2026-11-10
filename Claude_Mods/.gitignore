@@ -1,0 +1,6 @@
+# Written by Claude Code when a mod loads
+.claude-plugin/types/
+*/.claude-plugin/types/
+
+# Built by prompt-pad/vscode-extension/build.ps1
+*.vsix

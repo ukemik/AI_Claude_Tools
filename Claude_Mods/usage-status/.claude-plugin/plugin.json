@@ -1,0 +1,1 @@
+{ "name": "usage-status", "version": "0.2.0", "description": "Shows context-window fill and rate-limit usage percentages, each in its own colour, above the prompt.", "types": "./types/index.d.ts" }

@@ -1,0 +1,43 @@
+{
+  "name": "prompt-pad-sender",
+  "displayName": "Prompt Pad Sender",
+  "description": "Ctrl+Enter in prompts.txt sends the prompt block under the cursor (between - and ;) to the terminal and marks it sent; Ctrl+Shift+Enter does the same but first discards whatever is already in Claude's input box; @ completes project files, ~ completes sentences of Claude's last answer.",
+  "publisher": "ukemiktarak",
+  "version": "0.7.0",
+  "engines": { "vscode": "^1.80.0" },
+  "main": "./extension.js",
+  "activationEvents": ["onStartupFinished"],
+  "contributes": {
+    "commands": [
+      { "command": "promptPad.send", "title": "Prompt Pad: Send prompt block to terminal" },
+      { "command": "promptPad.sendClear", "title": "Prompt Pad: Clear the input box, then send the prompt block" }
+    ],
+    "keybindings": [
+      {
+        "command": "promptPad.send",
+        "key": "ctrl+enter",
+        "when": "editorTextFocus && resourceFilename == prompts.txt"
+      },
+      {
+        "command": "promptPad.sendClear",
+        "key": "ctrl+shift+enter",
+        "when": "editorTextFocus && resourceFilename == prompts.txt"
+      }
+    ],
+    "configuration": {
+      "title": "Prompt Pad",
+      "properties": {
+        "promptPad.terminalName": {
+          "type": "string",
+          "default": "",
+          "description": "Send to the terminal whose name contains this text; empty sends to the active terminal."
+        },
+        "promptPad.submitDelayMs": {
+          "type": "number",
+          "default": 200,
+          "description": "Milliseconds between pasting the prompt and pressing Enter."
+        }
+      }
+    }
+  }
+}

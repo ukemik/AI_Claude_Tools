@@ -1,0 +1,5 @@
+# Built or written at install time
+*.vsix
+*.bak
+.claude-plugin/types/
+**/.claude-plugin/types/

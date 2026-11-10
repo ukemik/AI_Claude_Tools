@@ -1,0 +1,34 @@
+{
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -WindowStyle Hidden -Command \"(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\Windows Navigation Start.wav').PlaySync()\""
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -WindowStyle Hidden -Command \"(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\Windows Navigation Start.wav').PlaySync()\""
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -WindowStyle Hidden -Command \"(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\Windows Navigation Start.wav').PlaySync()\""
+          }
+        ]
+      }
+    ]
+  }
+}
