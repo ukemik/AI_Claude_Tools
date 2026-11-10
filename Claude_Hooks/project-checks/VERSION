@@ -1,0 +1,3 @@
+1
+Raise this number whenever a check is added or changed, so installed-copies.ps1 notices that
+the installed checks are older than this folder.

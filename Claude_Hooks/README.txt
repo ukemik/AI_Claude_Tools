@@ -3,39 +3,77 @@ Claude_Hooks
 
 Claude Code hooks I use on every machine. Hooks are not mods: they are entries in
 ~\.claude\settings.json that run a command when something happens in Claude Code.
+The aim metrics hooks are not here: ai_metrics_package installs and owns them.
 
-Only the sound hooks are here. The aim metrics hooks are installed by ai_metrics_package.
-
-  sound-hooks.json   the hooks, in the same shape as the "hooks" key of settings.json
-  install.ps1        adds them to ~\.claude\settings.json
-
-What they do
-  A short chime (C:\Windows\Media\Windows Navigation Start.wav) when Claude Code
-    Notification   needs your attention (a permission question, or idle waiting for you)
-    Stop           finishes its answer
-    SubagentStop   a subagent finishes
-  Windows only: the sound is played through PowerShell's Media.SoundPlayer.
+  sound-hooks.json   the chime hooks, in the shape of the "hooks" key of settings.json
+  project-checks\    the session-start project checks (below)
+  user-claude-md.md  the section install.ps1 puts in ~\.claude\CLAUDE.md, so every Claude
+                     session knows about the project checks
+  install.ps1        installs all of it
 
 
-Install (for a person or for an AI agent doing the set-up)
------------------------------------------------------------
+1. Sound hooks
+--------------
+A short chime (C:\Windows\Media\Windows Navigation Start.wav) when Claude Code
+  Notification   needs your attention (a permission question, or idle waiting for you)
+  Stop           finishes its answer
+  SubagentStop   a subagent finishes
+Windows only (PowerShell's Media.SoundPlayer).
+
+
+2. Project checks
+-----------------
+At every session start, project-checks\run-checks.ps1 looks at the project the session is in
+and, if something is out of date, hands Claude numbered questions to ask you first. You answer
+each one yes, later or no:
+  yes    Claude does what the item says (for example follows a setup guide)
+  later  nothing; asked again next session
+  no     Claude creates .claude\declined\<check name> in that project; that check stops asking
+         there (delete the file to be asked again)
+
+Only project folders are checked: a git repository, or a folder with .agent\ or CLAUDE.md.
+The checks only look; they never change files. Claude changes things only after your yes.
+
+The checks (one file each in project-checks\checks\):
+
+  ai-dev-package      Does the project use the current ai_dev_package two-agent setup? Asks to
+                      install it (no setup), migrate it (old five-agent setup) or update it
+                      (older version), following the package's SETUP_GUIDE.md.
+  installed-copies    Are the installed checks and the installed ai_dev_package copy as new as
+                      their sources? Asks to run install.ps1 again if not.
+
+Adding a check (for any change every project should get):
+  1. Write project-checks\checks\<name>.ps1. It receives -ProjectRoot and -ClaudeHome and
+     prints one line per question: what it found and what Claude should do on yes. It prints
+     nothing when the project is fine, and never changes files. Copy an existing check.
+  2. Raise the number in project-checks\VERSION.
+  3. Run install.ps1 again (or say yes when the installed-copies check asks).
+
+
+3. Install (for a person or for an AI agent doing the set-up)
+--------------------------------------------------------------
 In PowerShell:
 
-    powershell -File <path>\Claude_Hooks\install.ps1
+    powershell -File <path>\AI_Claude_Tools\Claude_Hooks\install.ps1
 
-The script reads ~\.claude\settings.json, saves a copy as settings.json.bak, adds each hook in
-sound-hooks.json under its event unless the same command is already there, and writes the file
-back. Every other setting and hook (for example the aim metrics hooks) is kept. Running it again
-adds nothing.
+If the ai_dev_package release is somewhere other than
+%USERPROFILE%\OneDrive - Cabaletta Bio\Documents\GitHub\AI_Packages\Dev_Team\ai_dev_package,
+name it:
 
-By hand instead: open ~\.claude\settings.json and, under "hooks", add each event's entry from
-sound-hooks.json to that event's list (create "hooks" or the event if missing). Do not replace
-an event's existing entries; add to them.
+    powershell -File <path>\install.ps1 -PackageSource <release folder>
 
-Restart Claude Code afterwards; hooks are read when a session starts. Inside a session, /hooks
-lists the hooks in force.
+What it does (all in %USERPROFILE%\.claude\):
+  a. Copies project-checks\ to hooks\project-checks\ (an exact mirror) and records where it
+     came from in install-info.json.
+  b. Copies the ai_dev_package release to ai_dev_package\ (an exact mirror), if found.
+  c. Adds to settings.json the three sound hooks and one SessionStart hook that runs
+     hooks\project-checks\run-checks.ps1, unless already there. Every other setting and hook
+     is kept; the previous file is saved as settings.json.bak.
+  d. Adds a "Project checks" section to CLAUDE.md, between BEGIN/END markers (replaced on
+     later runs; the rest of the file is kept).
 
-Change the sound: replace the .wav path in sound-hooks.json (any file in C:\Windows\Media works),
-then edit the same entries in settings.json by hand; install.ps1 adds, it does not replace.
+Run it again whenever you change a check or publish a new ai_dev_package release. Then
+restart Claude Code; hooks are read when a session starts (/hooks lists them).
 
-Remove: delete the three SoundPlayer entries from ~\.claude\settings.json.
+Remove: delete the SoundPlayer and run-checks.ps1 entries from settings.json, the marked
+section from CLAUDE.md, and the folders hooks\project-checks\ and ai_dev_package\.
