@@ -11,7 +11,25 @@ rate limits is used, each in its own colour:
   wk    weekly limit used, and time until it resets (blue)
   sx/wk turn yellow from 80% and red from 95%.
 
-Figures come from Claude Code itself (session.measure); nothing is read from disk or the network.
+Figures come from Claude Code itself (session.measure).
+
+Other sessions waiting for you (since 0.3.0)
+  On the left of the same line, only when another Claude Code session on this machine is waiting:
+
+    2 waiting · 1 approval │ ctx 42% | ...
+
+  waiting    (orange) the session finished its answer and waits for your next prompt; it stops
+             counting as soon as you type a prompt in it
+  approval   (red) the session stopped at a permission question
+  /next      brings forward the VS Code window of the session to go to: approvals first, then
+             the one waiting longest. It runs "code ." in that session's folder, so it picks the
+             window that has that folder open; it cannot pick a terminal tab inside a window,
+             and two sessions in the same folder look the same.
+
+  How: each session keeps a small file in %USERPROFILE%\.claude\session-watch\ (its folder,
+  state and a heartbeat every 30 s) and reads the others' files every 3 s. A session that
+  stops sending heartbeats (closed or crashed) stops counting after 90 s; its file is deleted
+  when the session ends, or after a day. Nothing leaves the machine.
 
 Files
   .claude-plugin\plugin.json   name, version, description, types contract
