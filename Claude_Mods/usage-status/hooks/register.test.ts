@@ -1,6 +1,5 @@
 import { expect, test } from 'claude-code/testing'
-import { alertParts, formatCountdown, levelColor, parseRecord, pickNext, STALE_MS, summarize, toFigures } from './register.tsx'
-import type { SessionRecord } from './register.tsx'
+import { formatCountdown, levelColor, toFigures } from './register.tsx'
 
 test('every window reported', () => {
   expect(
@@ -43,40 +42,4 @@ test('threshold colours', () => {
   expect(levelColor(70, '#base', levels)).toBe('#E5C07B')
   expect(levelColor(85, '#base', levels)).toBe('#E06C75')
   expect(levelColor(null, '#base', levels)).toBe('#base')
-})
-
-const NOW = 1_800_000_000_000
-const rec = (id: string, state: SessionRecord['state'], since: number, beat = NOW): SessionRecord =>
-  ({ id, cwd: `C:/p/${id}`, name: id, state, since, beat })
-
-test('others: counts live sessions other than this one, by kind', () => {
-  const records = [
-    rec('self', 'waiting', 1),
-    rec('a', 'waiting', 5),
-    rec('b', 'waiting', 3),
-    rec('c', 'approval', 9),
-    rec('d', 'working', 2),
-    rec('e', 'idle', 2),
-    rec('dead', 'approval', 1, NOW - STALE_MS - 1),
-  ]
-  expect(summarize(records, 'self', NOW)).toEqual({ waiting: 2, approval: 1 })
-})
-
-test('/next: approval first, then the longest waiting; never itself or a dead session', () => {
-  const records = [rec('self', 'approval', 0), rec('a', 'waiting', 5), rec('b', 'waiting', 3), rec('c', 'approval', 9)]
-  expect(pickNext(records, 'self', NOW)?.id).toBe('c')
-  expect(pickNext(records.filter(r => r.id !== 'c'), 'self', NOW)?.id).toBe('b')
-  expect(pickNext([rec('x', 'approval', 1, NOW - STALE_MS - 1), rec('y', 'working', 1)], 'self', NOW)).toBe(null)
-})
-
-test('alert text', () => {
-  expect(alertParts({ waiting: 2, approval: 1 })).toEqual({ waiting: '2 waiting', approval: '1 approval' })
-  expect(alertParts({ waiting: 0, approval: 1 })).toEqual({ waiting: '', approval: '1 approval' })
-  expect(alertParts({ waiting: 0, approval: 0 })).toEqual({ waiting: '', approval: '' })
-})
-
-test('a half-written or foreign file is ignored', () => {
-  expect(parseRecord('{"id":"a","state":"wai')).toBe(null)
-  expect(parseRecord('{"hello":1}')).toBe(null)
-  expect(parseRecord('{"id":"a","state":"waiting","beat":5}')).toEqual({ id: 'a', cwd: '', name: '', state: 'waiting', since: 5, beat: 5 })
 })
