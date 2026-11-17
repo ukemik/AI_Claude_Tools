@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "additionalDirectories": [
+      "C:\\Users\\ukemiktarak\\.claude",
+      "../AI_Packages"
+    ],
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "PowerShell(git status:*)",
+      "PowerShell(git diff:*)",
+      "PowerShell(git log:*)"
+    ],
+    "deny": [
+      "Edit(//C:/Users/ukemiktarak/.claude/**)",
+      "Write(//C:/Users/ukemiktarak/.claude/**)",
+      "Edit(../AI_Packages/**)",
+      "Write(../AI_Packages/**)",
+      "Read(**/.env)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git reset:*)",
+      "Bash(git checkout:*)",
+      "PowerShell(git commit:*)",
+      "PowerShell(git push:*)",
+      "PowerShell(git reset:*)",
+      "PowerShell(git checkout:*)"
+    ]
+  }
+}

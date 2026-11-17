@@ -1,0 +1,4 @@
+2.10
+ai_dev_package 2.10 (2026-11-12). The first line is the version this project's setup matches;
+the setup check compares it with the installed package, part by part as whole numbers (2.10 is
+newer than 2.9). Updated only by an install or update that follows the package's SETUP_GUIDE.md.

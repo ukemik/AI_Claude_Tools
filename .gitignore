@@ -3,3 +3,11 @@
 *.bak
 .claude-plugin/types/
 **/.claude-plugin/types/
+
+# prompt-pad scratch files (per session, not shared)
+.claude/prompts.txt
+.claude/last-answer.txt
+
+# ai_dev_package: files exchanged with the agents (PRJ-4a-08); only the README is committed
+.agent/temp/*
+!.agent/temp/README.md
