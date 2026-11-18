@@ -2,6 +2,17 @@
 # Prints one line when it does not (no setup, the old five-agent setup, or an older version).
 param([Parameter(Mandatory)][string]$ProjectRoot, [Parameter(Mandatory)][string]$ClaudeHome)
 
+# A version is major.minor.patch. The first 2.x releases had two-part names, renamed:
+# 2.0 = 2.0.0, 2.1 = 2.1.0, 2.10 = 2.1.1. A missing part counts as 0.
+function ConvertTo-PackageVersion([string]$text) {
+    $renamed = @{ '2.0' = '2.0.0'; '2.1' = '2.1.0'; '2.10' = '2.1.1' }
+    if ($renamed.ContainsKey($text)) { $text = $renamed[$text] }
+    if ($text -notmatch '^\d+(\.\d+){0,2}$') { throw "not a version: '$text'" }
+    $parts = @($text.Split('.') | ForEach-Object { [int]$_ })
+    while ($parts.Count -lt 3) { $parts += 0 }
+    New-Object System.Version($parts[0], $parts[1], $parts[2])
+}
+
 $pkg = Join-Path $ClaudeHome 'ai_dev_package'
 $guide = Join-Path $pkg 'SETUP_GUIDE.md'
 $pkgVersionFile = Join-Path $pkg '.agent\ai_dev_package_version.txt'
@@ -26,8 +37,9 @@ if ($twoAgent) {
     $versionFile = Join-Path $ProjectRoot '.agent\ai_dev_package_version.txt'
     $have = if (Test-Path -LiteralPath $versionFile) { (Get-Content -LiteralPath $versionFile -TotalCount 1).Trim() } else { '2.0' }
     # Only an older project is offered an update; a project newer than the installed copy means the
-    # copy is stale, which installed-copies.ps1 reports.
-    $older = try { [version]"$have.0" -lt [version]"${current}.0" } catch { ${have} -ne ${current} }
+    # copy is stale, which installed-copies.ps1 reports. An old name equal to the installed
+    # version (2.10 and 2.1.1) is the same version: no question.
+    $older = try { (ConvertTo-PackageVersion $have) -lt (ConvertTo-PackageVersion $current) } catch { ${have} -ne ${current} }
     if ($older) {
         "This project's two-agent setup is ai_dev_package ${have}; the installed package is ${current}. Update it? " +
         "On yes: follow $guide, procedure C (Update)."

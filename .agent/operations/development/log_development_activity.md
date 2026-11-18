@@ -11,22 +11,39 @@ append-only, newest first, and entries older than 7 days move to
 *Rewritten at every task close. If this is stale, the 7-day archive rule has destroyed the
 project's memory — see `rules_documentation.md` §4.*
 
-*Last rewritten YYYY-MM-DD, at the close of `<task folder>` (REQ-nnn).*
+*Last rewritten 2026-11-17, at package adoption (no task yet).*
 
-**What the application is.** *One paragraph: purpose, stack (Windows PowerShell 5.1, TypeScript (Claude Code mods), JavaScript on Node (VS Code extension)), where it runs
-(not applicable yet (no app)).*
+**What the application is.** The source of the Overseer's Claude Code set-up (see
+`system_design.md` §1). Stack: Windows PowerShell 5.1, TypeScript (Claude Code mods), JavaScript
+on Node (VS Code extension). Nothing runs from this folder: each folder's `install.ps1`, run by
+the Overseer, copies it into `C:\Users\ukemiktarak\.claude` and VS Code.
 
-**What is built.** *The features and screens that are done, by area.*
+**What is built.** All of it is finished and accepted as it stands *(Human Overseer,
+2026-11-17)*:
+- `Claude_Hooks/`: sound hooks; the project-checks session-start hook (checks
+  `ai-dev-package`, `installed-copies`).
+- `Claude_Mods/prompt-pad/`: `/p`, `last-answer.txt`, the clear marker, and the VS Code extension
+  Prompt Pad Sender 0.7.0 (Ctrl+Enter, Ctrl+Shift+Enter, `@` and `~` completion).
+- `Claude_Mods/usage-status/` 0.4.0: context and rate-limit usage beside the prompt.
 
-**What is in progress.** *Pointer to `task_status.md`; one line per task in flight.*
+**What is in progress.** Nothing (`task_status.md`).
 
-**What comes next.** *Pointer to Next Up in `task_status.md`; the next one or two items.*
+**What comes next.** Nothing scheduled. The first session writes the opening sections of
+`requirements.md` (see `task_status.md`, RESUME HERE).
 
-**Known limitations and open defects.** *The few that shape upcoming work; full list in
-`log_system_defect.md`.*
+**Known limitations and open defects.** None open (`log_system_defect.md` is empty).
 
-**Standing decisions.** *Overseer decisions every agent must know (with dates), or pointers to
-where they are recorded.*
+**Standing decisions.**
+- *(Human Overseer, 2026-11-17)* **No outstanding work.** Every existing tool is in the form the
+  Overseer needs; none needs an update. Do not propose changes, refactors or fixes to existing
+  tools unless the Overseer asks.
+- *(Human Overseer, 2026-11-17)* App, database and conda rules are kept but skipped until a task
+  introduces one (`notes_for_agents.md`, "Rules that do not apply yet").
+- *(Human Overseer, 2026-11-17)* The Overseer runs every `install.ps1`; agents never do
+  (`COD-1-01`).
+- *(Human Overseer, 2026-11-17)* No TypeScript compiler is installed. Claude Code runs the mods'
+  `.ts` files itself, and `claude plugin test` is their check (`notes_for_agents.md` §5). Adding
+  TypeScript would be a dependency hard stop; not wanted now.
 
 **To do / reminders.**
 - [ ] **Database first (`COD-20-01`)** — not applicable yet: the project has no database. If a
