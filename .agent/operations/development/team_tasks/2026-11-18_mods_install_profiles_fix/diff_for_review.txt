@@ -1,0 +1,127 @@
+diff --git a/.agent/operations/development/task_status.md b/.agent/operations/development/task_status.md
+index 8c66873..4461354 100644
+--- a/.agent/operations/development/task_status.md
++++ b/.agent/operations/development/task_status.md
+@@ -6,20 +6,25 @@ the Orchestrator (`DOC-2-02`, `DOC-7-01`).
+ The test for this file: **if the session ended now, could a fresh Orchestrator resume from this
+ board alone?** History belongs in `log_development_activity.md`, not here.
+ 
+-Last updated: 2026-11-17 — ai_dev_package 2.10 adopted; no task yet.
++Last updated: 2026-11-18 — REQ-001 (mods installer -Profiles fix) in development.
+ 
+ ---
+ 
+ ## RESUME HERE (next session)
+ 
+-Write the opening sections of `requirements.md` from the project's `README.txt` files, recording
++Finish `team_tasks/2026-11-18_mods_install_profiles_fix` (REQ-001): fix in
++`Claude_Mods/install.ps1`, test 001, review, Gate 2.
++
++Then: write the opening sections of `requirements.md` from the project's `README.txt` files, recording
+ every existing tool as an already-delivered requirement (status: done). Approved by the Overseer
+ (2026-11-17). This documents what exists; it changes no tool. All existing tools are accepted as
+ they are and need no update (`log_development_activity.md`, Standing decisions).
+ 
+ ## In Flight
+ 
+-None.
++| Task | REQ | Stage | Next |
++|---|---|---|---|
++| `2026-11-18_mods_install_profiles_fix` | REQ-001 | Development (no plan, `WFL-4-02`) | Test 001, then review |
+ 
+ ## File-Overlap Check
+ 
+diff --git a/.agent/operations/documentation/requirements.md b/.agent/operations/documentation/requirements.md
+index 9ffb5cb..742621b 100644
+--- a/.agent/operations/documentation/requirements.md
++++ b/.agent/operations/documentation/requirements.md
+@@ -14,14 +14,15 @@ test scenario names the requirement it verifies. Maintained by the Orchestrator.
+ - A requirement is updated **before** work on it starts (`DOC-7-01`).
+ - Record the Overseer's words and decisions, with dates, in Notes.
+ 
+-**Next number to assign: REQ-001.**
++**Next number to assign: REQ-002.**
+ 
+ ---
+ 
+-## 1. *Functional area (e.g. Authentication & Session)*
++## 1. Installers
+ 
+ | Req No | Requirement | Status | Status Date | Notes |
+ |---|---|---|---|---|
++| REQ-001 | `Claude_Mods/install.ps1` builds and installs prompt-pad's VS Code extension whether or not `-VsCodeProfiles` is given: with none, into the default profile only; with one or more, into the default profile and each named profile. | ACTIVE | 2026-11-18 | Overseer, 2026-11-18, on a new computer: run without `-VsCodeProfiles`, the installer stopped at `build.ps1` with "Missing an argument for parameter 'Profiles'". "OK please fix that bug and let me know." |
+ 
+ ## 2. *Functional area*
+ 
+@@ -47,3 +48,4 @@ requirement is only `DONE` when every task serving it is `DONE` or `CANCELED`.
+ 
+ | Req No | Task Folder | Task Status | Status Date | Notes |
+ |---|---|---|---|---|
++| REQ-001 | `team_tasks/2026-11-18_mods_install_profiles_fix` | ACTIVE | 2026-11-18 | No plan (`WFL-4-02`: one file) |
+diff --git a/.agent/operations/testing/test_scenarios.md b/.agent/operations/testing/test_scenarios.md
+index e28514f..3a1d509 100644
+--- a/.agent/operations/testing/test_scenarios.md
++++ b/.agent/operations/testing/test_scenarios.md
+@@ -15,12 +15,10 @@ overwritten.
+ Test numbers are sequential and permanent — never reused, never renumbered.
+ Status is `ACTIVE`, `DONE`, or `CANCELED`.
+ 
+-**Next number to assign: 001.**
++**Next number to assign: 002.**
+ 
+ ---
+ 
+ | Test No | Test Scenario | Req No | Test Script | Status | Status Date | Notes |
+ |---|---|---|---|---|---|---|
+-
+-*Example row (delete):*
+-*`| 001 | Given <precondition>, when <action>, then <expected result, concretely>. | REQ-001 | test001_<title>.py | ACTIVE | YYYY-MM-DD | <run history, limits, what is not covered> |`*
++| 001 | Given a copy of `Claude_Mods/install.ps1` in a sandbox under `.agent/temp/test001/`, with stub `claude.cmd` and `code.cmd` first on `PATH` (the stub `claude` reports the marketplace and both mods as already present) and a stub `prompt-pad/vscode-extension/build.ps1` that records the `-Profiles` it receives: **(A)** when the installer is run as `powershell -File <install.ps1>` with no `-VsCodeProfiles`, then it exits 0, its output does not contain "Missing an argument", and the stub `build.ps1` is called exactly once with 0 profiles; **(B)** when run as `& <install.ps1> -VsCodeProfiles p1,p2`, then it exits 0 and the stub is called exactly once with the 2 profiles `p1`, `p2` in that order. Prints `RESULT: PASS` only if both hold, else `RESULT: FAIL` with the failing check. Writes nothing outside `.agent/temp/test001/`, which it recreates on each run. Run with `-Installer` pointing at the pre-fix copy (from `git show HEAD:Claude_Mods/install.ps1`), case A is expected to fail. | REQ-001 | `test001_mods_install_profiles.ps1` | ACTIVE | 2026-11-18 | PowerShell, not Python: the project has no Python environment (`notes_for_agents.md`, rules applied in spirit); kept in `testing/py/` per `TST-2-01`. Does not exercise the real `build.ps1` or `code --install-extension` (they write outside the project, `COD-1-01`). |
+diff --git a/.agent/team/notes_for_agents.md b/.agent/team/notes_for_agents.md
+index 175d586..91d515a 100644
+--- a/.agent/team/notes_for_agents.md
++++ b/.agent/team/notes_for_agents.md
+@@ -32,6 +32,7 @@ worse than no note (`DOC-8-02`).
+ | | |
+ |---|---|
+ | What the project is | Source of the Overseer's Claude Code set-up: `Claude_Hooks/` (sound hooks, the project-checks hook) and `Claude_Mods/` (Claude Code mods `prompt-pad` and `usage-status`, and prompt-pad's VS Code extension), each with a PowerShell `install.ps1` |
++| This computer *(Orchestrator, 2026-11-18)* | New computer: user profile `C:\Users\umut`, so the installs go to `C:\Users\umut\.claude`; project at `C:\Users\umut\Documents\umut\Github\AI_Claude_Tools`; `AI_Packages` at `C:\Users\umut\Documents\umut\Github\AI_Packages` (not OneDrive: pass `-PackageSource` to `Claude_Hooks/install.ps1`). The `C:\Users\ukemiktarak` and OneDrive paths elsewhere in this file and in `CLAUDE.md` are from the old computer |
+ | Runtimes | Windows PowerShell 5.1 (`powershell.exe`); Node `v24.18.0` and npm `11.16.0` on `PATH`; Claude Code CLI `claude` on `PATH` |
+ | Conda environment | Not applicable yet: this project has no conda environment (`COD-18-04`) |
+ | Environment file | Not applicable yet: no `environment.yml` (`COD-18-05`) |
+@@ -47,7 +48,7 @@ that `install.ps1` copies into `C:\Users\ukemiktarak\.claude` and VS Code.
+ |---|---|
+ | URL | Not applicable yet (no app) |
+ | Launch | Not applicable yet (no app) |
+-| **Installing a change** | **The Human Overseer runs it, never an agent** (`COD-1-01`: install scripts write outside the project). After a change, raise the version (the mod's `.claude-plugin/plugin.json`, the extension's `vscode-extension/package.json`, or `Claude_Hooks/project-checks/VERSION`), then ask the Overseer to run `! powershell -File Claude_Hooks\install.ps1` and/or `! powershell -File Claude_Mods\install.ps1` in the Claude prompt, and restart Claude Code / reload VS Code |
++| **Installing a change** | **The Human Overseer runs it, never an agent** (`COD-1-01`: install scripts write outside the project). After a change, raise the version (the mod's `.claude-plugin/plugin.json`, the extension's `vscode-extension/package.json`, or `Claude_Hooks/project-checks/VERSION`), then ask the Overseer to run `! powershell -NoProfile -ExecutionPolicy Bypass -File Claude_Hooks/install.ps1` and/or `! powershell -NoProfile -ExecutionPolicy Bypass -File Claude_Mods/install.ps1` in the Claude prompt — **forward slashes**: `!` runs in Git Bash, which eats backslashes *(Orchestrator, 2026-11-18)*, and restart Claude Code / reload VS Code |
+ 
+ ## 2. Database
+ 
+diff --git a/Claude_Mods/install.ps1 b/Claude_Mods/install.ps1
+index f18cbac..9e8d3e8 100644
+--- a/Claude_Mods/install.ps1
++++ b/Claude_Mods/install.ps1
+@@ -23,8 +23,9 @@ foreach ($m in $mods) {
+     else { claude plugin install "$m@$market" }
+ }
+ 
+-# 3. prompt-pad's VS Code half.
+-& powershell -NoProfile -File (Join-Path $here 'prompt-pad\vscode-extension\build.ps1') -Profiles $VsCodeProfiles
++# 3. prompt-pad's VS Code half. Called in this process, not through a child powershell -File:
++#    there an empty -VsCodeProfiles reached build.ps1 as -Profiles with no value and was refused.
++& (Join-Path $here 'prompt-pad\vscode-extension\build.ps1') -Profiles $VsCodeProfiles
+ 
+ # 4. A mod loaded twice (here and from an old CLAUDE_CODE_PLUGIN_DIRS entry) runs its hooks twice.
+ $settings = Join-Path $env:USERPROFILE '.claude\settings.json'
+
+=== git status --short ===
+ M .agent/operations/development/task_status.md
+ M .agent/operations/documentation/requirements.md
+ M .agent/operations/testing/test_scenarios.md
+ M .agent/team/notes_for_agents.md
+ M Claude_Mods/install.ps1
+?? .agent/operations/development/team_tasks/2026-11-18_mods_install_profiles_fix/
+?? .agent/operations/testing/py/test001_mods_install_profiles.ps1
+
+=== Untracked: .agent/operations/testing/py/test001_mods_install_profiles.ps1 (read the file) ===

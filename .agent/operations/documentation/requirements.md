@@ -14,14 +14,15 @@ test scenario names the requirement it verifies. Maintained by the Orchestrator.
 - A requirement is updated **before** work on it starts (`DOC-7-01`).
 - Record the Overseer's words and decisions, with dates, in Notes.
 
-**Next number to assign: REQ-001.**
+**Next number to assign: REQ-002.**
 
 ---
 
-## 1. *Functional area (e.g. Authentication & Session)*
+## 1. Installers
 
 | Req No | Requirement | Status | Status Date | Notes |
 |---|---|---|---|---|
+| REQ-001 | `Claude_Mods/install.ps1` builds and installs prompt-pad's VS Code extension whether or not `-VsCodeProfiles` is given: with none, into the default profile only; with one or more, into the default profile and each named profile. | ACTIVE | 2026-11-18 | Overseer, 2026-11-18, on a new computer: run without `-VsCodeProfiles`, the installer stopped at `build.ps1` with "Missing an argument for parameter 'Profiles'". "OK please fix that bug and let me know." |
 
 ## 2. *Functional area*
 
@@ -47,3 +48,4 @@ requirement is only `DONE` when every task serving it is `DONE` or `CANCELED`.
 
 | Req No | Task Folder | Task Status | Status Date | Notes |
 |---|---|---|---|---|
+| REQ-001 | `team_tasks/2026-11-18_mods_install_profiles_fix` | ACTIVE | 2026-11-18 | No plan (`WFL-4-02`: one file) |

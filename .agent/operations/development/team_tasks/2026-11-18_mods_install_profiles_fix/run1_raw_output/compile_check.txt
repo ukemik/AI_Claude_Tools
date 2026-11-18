@@ -1,0 +1,2 @@
+﻿C:\Users\umut\Documents\umut\Github\AI_Claude_Tools\Claude_Mods\install.ps1 : parse OK
+C:\Users\umut\Documents\umut\Github\AI_Claude_Tools\.agent\operations\testing\py\test001_mods_install_profiles.ps1 : parse OK

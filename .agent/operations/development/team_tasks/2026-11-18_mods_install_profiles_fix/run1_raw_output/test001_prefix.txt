@@ -1,0 +1,32 @@
+﻿EXIT: 1
+--- case A (no -VsCodeProfiles) (exit 0)
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+powershell.exe : 
+C:\Users\umut\Documents\umut\Github\AI_Claude_Tools\.agent\temp\test001\Claude_Mods\prompt-pad\vscode-extension\build.p
+At 
+C:\Users\umut\Documents\umut\Github\AI_Claude_Tools\.agent\operations\testing\py\test001_mods_install_profiles.ps1:34 
+char:13
++     $out = (& powershell @psArgs 2>&1 | Out-String)
++             ~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (C:\Users\umut\D...tension\build.p:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+s1 : Missing an argument for parameter 'Profiles'. Specify a parameter of type 'System.String[]' and try again.
+    + CategoryInfo          : InvalidArgument: (:) [build.ps1], ParentContainsErrorRecordException
+    + FullyQualifiedErrorId : MissingArgument,build.ps1
+ 
+Done. Restart Claude Code, and reload VS Code (Ctrl+Shift+P > Reload Window).
+build.ps1 calls: 0 []
+--- case B (-VsCodeProfiles p1,p2) (exit 0)
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+Done. Restart Claude Code, and reload VS Code (Ctrl+Shift+P > Reload Window).
+build.ps1 calls: 1 [COUNT=1;VALUES=p1]
+FAILED: case A (no -VsCodeProfiles): output contains 'Missing an argument'
+FAILED: case A (no -VsCodeProfiles): build.ps1 calls [], expected [COUNT=0;VALUES=]
+FAILED: case B (-VsCodeProfiles p1,p2): build.ps1 calls [COUNT=1;VALUES=p1], expected [COUNT=2;VALUES=p1|p2]
+RESULT: FAIL
+

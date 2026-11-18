@@ -1,0 +1,15 @@
+﻿EXIT: 0
+--- case A (no -VsCodeProfiles) (exit 0)
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+Done. Restart Claude Code, and reload VS Code (Ctrl+Shift+P > Reload Window).
+build.ps1 calls: 1 [COUNT=0;VALUES=]
+--- case B (-VsCodeProfiles p1,p2) (exit 0)
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+claude-mods prompt-pad@claude-mods usage-status@claude-mods
+Done. Restart Claude Code, and reload VS Code (Ctrl+Shift+P > Reload Window).
+build.ps1 calls: 1 [COUNT=2;VALUES=p1|p2]
+RESULT: PASS
+

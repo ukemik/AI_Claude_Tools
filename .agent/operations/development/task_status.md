@@ -6,20 +6,25 @@ the Orchestrator (`DOC-2-02`, `DOC-7-01`).
 The test for this file: **if the session ended now, could a fresh Orchestrator resume from this
 board alone?** History belongs in `log_development_activity.md`, not here.
 
-Last updated: 2026-11-17 — ai_dev_package 2.10 adopted; no task yet.
+Last updated: 2026-11-18 — REQ-001 (mods installer -Profiles fix) in development.
 
 ---
 
 ## RESUME HERE (next session)
 
-Write the opening sections of `requirements.md` from the project's `README.txt` files, recording
+Finish `team_tasks/2026-11-18_mods_install_profiles_fix` (REQ-001): fix in
+`Claude_Mods/install.ps1`, test 001, review, Gate 2.
+
+Then: write the opening sections of `requirements.md` from the project's `README.txt` files, recording
 every existing tool as an already-delivered requirement (status: done). Approved by the Overseer
 (2026-11-17). This documents what exists; it changes no tool. All existing tools are accepted as
 they are and need no update (`log_development_activity.md`, Standing decisions).
 
 ## In Flight
 
-None.
+| Task | REQ | Stage | Next |
+|---|---|---|---|
+| `2026-11-18_mods_install_profiles_fix` | REQ-001 | Development (no plan, `WFL-4-02`) | Test 001, then review |
 
 ## File-Overlap Check
 

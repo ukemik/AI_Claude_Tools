@@ -23,8 +23,9 @@ foreach ($m in $mods) {
     else { claude plugin install "$m@$market" }
 }
 
-# 3. prompt-pad's VS Code half.
-& powershell -NoProfile -File (Join-Path $here 'prompt-pad\vscode-extension\build.ps1') -Profiles $VsCodeProfiles
+# 3. prompt-pad's VS Code half. Called in this process, not through a child powershell -File:
+#    there an empty -VsCodeProfiles reached build.ps1 as -Profiles with no value and was refused.
+& (Join-Path $here 'prompt-pad\vscode-extension\build.ps1') -Profiles $VsCodeProfiles
 
 # 4. A mod loaded twice (here and from an old CLAUDE_CODE_PLUGIN_DIRS entry) runs its hooks twice.
 $settings = Join-Path $env:USERPROFILE '.claude\settings.json'

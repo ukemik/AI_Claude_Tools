@@ -32,6 +32,7 @@ worse than no note (`DOC-8-02`).
 | | |
 |---|---|
 | What the project is | Source of the Overseer's Claude Code set-up: `Claude_Hooks/` (sound hooks, the project-checks hook) and `Claude_Mods/` (Claude Code mods `prompt-pad` and `usage-status`, and prompt-pad's VS Code extension), each with a PowerShell `install.ps1` |
+| This computer *(Orchestrator, 2026-11-18)* | New computer: user profile `C:\Users\umut`, so the installs go to `C:\Users\umut\.claude`; project at `C:\Users\umut\Documents\umut\Github\AI_Claude_Tools`; `AI_Packages` at `C:\Users\umut\Documents\umut\Github\AI_Packages` (not OneDrive: pass `-PackageSource` to `Claude_Hooks/install.ps1`). The `C:\Users\ukemiktarak` and OneDrive paths elsewhere in this file and in `CLAUDE.md` are from the old computer |
 | Runtimes | Windows PowerShell 5.1 (`powershell.exe`); Node `v24.18.0` and npm `11.16.0` on `PATH`; Claude Code CLI `claude` on `PATH` |
 | Conda environment | Not applicable yet: this project has no conda environment (`COD-18-04`) |
 | Environment file | Not applicable yet: no `environment.yml` (`COD-18-05`) |
@@ -47,7 +48,7 @@ that `install.ps1` copies into `C:\Users\ukemiktarak\.claude` and VS Code.
 |---|---|
 | URL | Not applicable yet (no app) |
 | Launch | Not applicable yet (no app) |
-| **Installing a change** | **The Human Overseer runs it, never an agent** (`COD-1-01`: install scripts write outside the project). After a change, raise the version (the mod's `.claude-plugin/plugin.json`, the extension's `vscode-extension/package.json`, or `Claude_Hooks/project-checks/VERSION`), then ask the Overseer to run `! powershell -File Claude_Hooks\install.ps1` and/or `! powershell -File Claude_Mods\install.ps1` in the Claude prompt, and restart Claude Code / reload VS Code |
+| **Installing a change** | **The Human Overseer runs it, never an agent** (`COD-1-01`: install scripts write outside the project). After a change, raise the version (the mod's `.claude-plugin/plugin.json`, the extension's `vscode-extension/package.json`, or `Claude_Hooks/project-checks/VERSION`), then ask the Overseer to run `! powershell -NoProfile -ExecutionPolicy Bypass -File Claude_Hooks/install.ps1` and/or `! powershell -NoProfile -ExecutionPolicy Bypass -File Claude_Mods/install.ps1` in the Claude prompt — **forward slashes**: `!` runs in Git Bash, which eats backslashes *(Orchestrator, 2026-11-18)*, and restart Claude Code / reload VS Code |
 
 ## 2. Database
 
